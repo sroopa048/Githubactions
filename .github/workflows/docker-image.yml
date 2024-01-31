@@ -39,5 +39,14 @@ jobs:
           cluster-name: '${{ secrets.cluster_name }}'
       - name: Setup kubectl
         id: install-kubectl
-        uses: azure/setup-kubectl@v3    
+        uses: azure/setup-kubectl@v3   
+      - name: Deploy to AKS
+        id: deploy-aks
+        uses: Azure/k8s-deploy@v4
+        with:
+          namespace: 'default'
+          manifests: |
+             python-deploy.yaml
+          images: 'sroopa048/python:${{ github.sha }}'
+          pull-images: false   
          
