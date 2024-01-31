@@ -27,43 +27,9 @@ jobs:
         with:
           push: true
           tags: sroopa048/python:${{ github.sha }}
-      - name: Azure Login
-        uses: azure/login@14a755a4e2fd6dff25794233def4f2cf3f866955
+      - name: Azure login
+        uses: azure/login@v1.4.6
         with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-      - name: Build image on ACR
-        uses: azure/CLI@61bb69d64d613b52663984bf12d6bac8fd7b3cc8
-        with:
-        azcliversion: 2.29.1
-        inlineScript: |
-          az configure --defaults acr=${{ env.AZURE_CONTAINER_REGISTRY }}
-          az acr build -t  -t ${{ env.REGISTRY_URL }}/${{ env.PROJECT_NAME }}:${{ github.sha }}
-    
-      - name: Gets K8s context
-        uses: azure/aks-set-context@94ccc775c1997a3fcfbfbce3c459fec87e0ab188
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-          resource-group: ${{ env.RESOURCE_GROUP }}
-          cluster-name: ${{ env.CLUSTER_NAME }}
-        id: login
-
-      - name: Configure deployment
-        uses: azure/k8s-bake@61041e8c2f75c1f01186c8f05fb8b24e1fc507d8
-         with:
-        renderEngine: 'helm'
-        helmChart: ${{ env.CHART_PATH }}
-        overrideFiles: ${{ env.CHART_OVERRIDE_PATH }}
-        overrides: |     
-          replicas:2
-        helm-version: 'latest' 
-        id: bake
-
-      - name: Deploys application
-      - uses: Azure/k8s-deploy@dd4bbd13a5abd2fc9ca8bdcb8aee152bb718fa78
-        with:
-        manifests: ${{ steps.bake.outputs.manifestsBundle }}
-        images: |
-          ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.PROJECT_NAME }}:${{ github.sha }}
-        imagepullsecrets: |
-          ${{ env.PROJECT_NAME }}
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
