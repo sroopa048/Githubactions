@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: sample-webapp
+  name: sample-webapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sample-webapp
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: sample-webapp
+    spec:
+      containers:
+      - image: sroopa048/sample-app:latest
+        name: sample-app
+        resources: {}
+status: {}

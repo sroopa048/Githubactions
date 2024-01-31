@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: python-app
+  name: python-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: python-app
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: python-app
+    spec:
+      containers:
+      - image: sroopa048/python:v1.0.0
+        name: python
+        resources: {}
+status: {}

@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  creationTimestamp: null
+  name: python-app
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - python.kubeace.com
+    secretName: python.kubeace.com-tls
+  rules:
+  - host: python.kubeace.com
+    http:
+      paths:
+      - backend:
+          service:
+            name: python-app
+            port:
+              number: 8080
+        path: /
+        pathType: Exact
+status:
+  loadBalancer: {}
